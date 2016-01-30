@@ -30,5 +30,6 @@ public class PlayerBallInteraction : MonoBehaviour
 		else if (IsBallInJuggleRange) {
 			Ball.Instance.Juggle( ClownId );
 		}
+		IsHoldingBall = false;
 	}
 }
