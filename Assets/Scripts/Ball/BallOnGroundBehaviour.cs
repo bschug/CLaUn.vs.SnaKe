@@ -11,7 +11,7 @@ public class BallOnGroundBehaviour : MonoBehaviour {
 
 	void OnEnable() {
 		Rigidbody.velocity = Vector2.zero;
-		Rigidbody.isKinematic = false;
+		Rigidbody.isKinematic = true;
 	}
 
 	void Update() {

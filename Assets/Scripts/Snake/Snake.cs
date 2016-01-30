@@ -47,4 +47,11 @@ public class Snake : MonoBehaviour
 		SnakePathRegistry.Instance.UnlockPath( CurrentPath );
 		StartCoroutine( Spawn( BalanceValues.Instance.SnakeRespawnDelay ) );
 	}
+
+	public List<SnakeSegment> DetachSegmentsBehind (SnakeSegment segment) {
+		var segmentIndex = Segments.IndexOf( segment );
+		var result = Segments.Skip(segmentIndex + 1).ToList();
+		Segments = Segments.Take( segmentIndex ).ToList();
+		return result;
+	}
 }

@@ -15,4 +15,5 @@ public class BalanceValues : SingletonMonoBehaviour<BalanceValues> {
 	public float InitialSnakeSpawnDelay;
 	public float SnakeRespawnDelay;
 	public float SnakeSpawnDigDelay;
+	public int HealthPerSegment = 3;
 }
