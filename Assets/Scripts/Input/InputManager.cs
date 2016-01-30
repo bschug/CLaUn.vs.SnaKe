@@ -4,13 +4,6 @@ using XInputDotNetPure;
 
 public class InputManager : SingletonMonoBehaviour<InputManager>
 {
-
-	//private float LittleHorizontalAxis = Input.GetAxisRaw( "Horizontal" );
-	//private float LittleVerticalAxis = Input.GetAxisRaw( "Vertical" );
-
-	//private float BigHorizontalAxis = Input.GetAxisRaw( "Horizontal2" );
-	//private float BigVerticalAxis = Input.GetAxisRaw( "Vertical2" );
-
 	public float LittleX {
 		get {
 			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
@@ -30,7 +23,16 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 			}
 		}
 	}
-	public ButtonState LittleThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder; } }
+	public ButtonState LittleThrow {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder;
+			}
+			else {
+				return Input.GetKey( KeyCode.Space ) ? ButtonState.Pressed : ButtonState.Released;
+			}
+		}
+	}
 
 	public float BigX {
 		get {
@@ -55,7 +57,16 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 		}
 	}
 
-	public ButtonState BigThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder; } }
+	public ButtonState BigThrow {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder;
+			}
+			else {
+				return Input.GetKey( KeyCode.LeftControl ) ? ButtonState.Pressed : ButtonState.Released;
+			}
+		}
+	}
 
 	private bool LittleThrowPressedThisFrame;
 	private bool BigThrowPressedThisFrame;
