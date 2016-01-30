@@ -5,7 +5,7 @@ public abstract class SingletonMonoBehaviour<T> : MonoBehaviour where T :Singlet
 
     public static T Instance { get; private set; }
 
-    void Awake()
+    protected virtual void Awake()
     {
 		if (Instance != null) {
 			Debug.LogError( "Duplicate instance of " + name );
