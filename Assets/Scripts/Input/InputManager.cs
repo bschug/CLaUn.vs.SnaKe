@@ -2,12 +2,59 @@
 using System.Collections;
 using XInputDotNetPure;
 
-public class InputManager : SingletonMonoBehaviour<InputManager> {
-	public float LittleX { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.X; } }
-	public float LittleY { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.Y; } }
+public class InputManager : SingletonMonoBehaviour<InputManager>
+{
+
+	//private float LittleHorizontalAxis = Input.GetAxisRaw( "Horizontal" );
+	//private float LittleVerticalAxis = Input.GetAxisRaw( "Vertical" );
+
+	//private float BigHorizontalAxis = Input.GetAxisRaw( "Horizontal2" );
+	//private float BigVerticalAxis = Input.GetAxisRaw( "Vertical2" );
+
+	public float LittleX {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.X;
+			}
+			else { return Input.GetAxisRaw( "Horizontal" ); }
+		}
+	}
+	public float LittleY {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.Y;
+			}
+			else {
+				return Input.GetAxisRaw( "Vertical" );
+				;
+			}
+		}
+	}
 	public ButtonState LittleThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder; } }
-	public float BigX { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.X; } }
-	public float BigY { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y; } }
+
+	public float BigX {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.X;
+			}
+			else {
+				return Input.GetAxisRaw( "Horizontal2" );
+				;
+			}
+		}
+	}
+
+	public float BigY {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y;
+			}
+			else {
+				return Input.GetAxisRaw( "Vertical2" );
+			}
+		}
+	}
+
 	public ButtonState BigThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder; } }
 
 	private ButtonState LittleThrowLastFrame;
@@ -37,7 +84,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
 		}
 	}
 
-	void Update() {
+	void Update () {
 		if (LittleThrowLastFrame == ButtonState.Released && LittleThrow == ButtonState.Pressed) {
 			LittleThrowPressedThisFrame = true;
 		}
