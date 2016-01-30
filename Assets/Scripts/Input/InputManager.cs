@@ -2,13 +2,71 @@
 using System.Collections;
 using XInputDotNetPure;
 
-public class InputManager : SingletonMonoBehaviour<InputManager> {
-	public float LittleX { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.X; } }
-	public float LittleY { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.Y; } }
-	public ButtonState LittleThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder; } }
-	public float BigX { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.X; } }
-	public float BigY { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y; } }
-	public ButtonState BigThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder; } }
+public class InputManager : SingletonMonoBehaviour<InputManager>
+{
+	public float LittleX {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.X;
+			}
+			else { return Input.GetAxisRaw( "Horizontal" ); }
+		}
+	}
+	public float LittleY {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.Y;
+			}
+			else {
+				return Input.GetAxisRaw( "Vertical" );
+				;
+			}
+		}
+	}
+	public ButtonState LittleThrow {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder;
+			}
+			else {
+				return Input.GetKey( KeyCode.Space ) ? ButtonState.Pressed : ButtonState.Released;
+			}
+		}
+	}
+
+	public float BigX {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.X;
+			}
+			else {
+				return Input.GetAxisRaw( "Horizontal2" );
+				;
+			}
+		}
+	}
+
+	public float BigY {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y;
+			}
+			else {
+				return Input.GetAxisRaw( "Vertical2" );
+			}
+		}
+	}
+
+	public ButtonState BigThrow {
+		get {
+			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
+				return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder;
+			}
+			else {
+				return Input.GetKey( KeyCode.RightControl ) ? ButtonState.Pressed : ButtonState.Released;
+			}
+		}
+	}
 
 	private ButtonState LittleThrowLastFrame;
 	private ButtonState BigThrowLastFrame;
@@ -37,7 +95,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
 		}
 	}
 
-	void Update() {
+	void Update () {
 		if (LittleThrowLastFrame == ButtonState.Released && LittleThrow == ButtonState.Pressed) {
 			LittleThrowPressedThisFrame = true;
 		}
