@@ -89,6 +89,10 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	public void Catch (ClownId catchingClown) {
 		BallHeldBehaviour.CurrentClown = GetClown( catchingClown );
 		SetState( BallState.Held );
+		Invoke( "LoseCharge", BalanceValues.Instance.LoseChargeInHandDelay );
+	}
+
+	void LoseCharge() {
 		NumJuggles = 0;
 	}
 
@@ -102,7 +106,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
-		NumJuggles = 0;
+		CancelInvoke( "LoseCharge" );
 		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
@@ -117,7 +121,6 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			Debug.LogError( "Cannot juggle ball when on ground" );
 			return;
 		}
-		Debug.Log( "Juggling to " + throwingClown.Other() );
 
 		NumJuggles++;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
@@ -143,7 +146,12 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
-		// TODO hit segment
+		if (ChargeLevel == 1) {
+			segment.TakeDamage();
+		}
+		else if (ChargeLevel == 2) {
+			segment.Die();
+		}
 
 		var bounceDir = Vector2.Reflect( this.Direction, segment.Direction.OrthogonalCCW() ).normalized;
 		SetState( BallState.Bouncing );

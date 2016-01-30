@@ -33,7 +33,6 @@ public class BallThrownBehaviour : MonoBehaviour
 
 	void OnCollisionEnter2D (Collision2D collision) {
 		var contact = collision.contacts[0];
-		Debug.Log( "Ball collided with " + contact.collider.name );
 
 		var snakeSegment = contact.collider.GetComponent<SnakeSegment>();
 		if (snakeSegment != null) {
