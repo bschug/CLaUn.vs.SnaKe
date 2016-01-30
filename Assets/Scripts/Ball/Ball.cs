@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Vector2Extensions;
 
 public class Ball : SingletonMonoBehaviour<Ball> {
 
@@ -28,7 +29,12 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	[SerializeField]
 	BallOnGroundBehaviour BallOnGroundBehaviour;
 
+	public float Radius { get { return GetComponent<CircleCollider2D>().radius; } }
 	public float Speed { get { return BalanceValues.Instance.BallSpeed[ChargeLevel]; } }
+	public Snake LastSnakeHit { get; private set; }
+
+	Vector2 LastPosition;
+	Vector2 Direction;
 
 	MonoBehaviour BehaviourForState (BallState state) {
 		switch (state) {
@@ -45,9 +51,16 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		GetClown( ClownId.Little ).CatchBall();
 	}
 
-	void Update() {
-		
+	void Update () {
 		SwitchBallState();
+		UpdateDirection();
+	}
+
+	void UpdateDirection () { 
+		if ((Vector2)transform.position != LastPosition) {
+			Direction = (Vector2)transform.position - LastPosition;
+		}
+		LastPosition = transform.position;
     }
 
 	void SwitchBallState () {
@@ -76,6 +89,11 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	public void Catch (ClownId catchingClown) {
 		BallHeldBehaviour.CurrentClown = GetClown( catchingClown );
 		SetState( BallState.Held );
+		Invoke( "LoseCharge", BalanceValues.Instance.LoseChargeInHandDelay );
+	}
+
+	void LoseCharge() {
+		NumJuggles = 0;
 	}
 
 	public void Throw (ClownId throwingClown) {
@@ -88,7 +106,8 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
-		NumJuggles = 0;
+		CancelInvoke( "LoseCharge" );
+		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
 	} 
@@ -102,15 +121,42 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			Debug.LogError( "Cannot juggle ball when on ground" );
 			return;
 		}
-		Debug.Log( "Juggling to " + throwingClown.Other() );
 
 		NumJuggles++;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
 	}
 
+	public void OnObstacleHit(Vector2 bounceDirection) {
+		SetState( BallState.Bouncing );
+		BallBouncingBehaviour.Init( bounceDirection );
+	}
+
+	public void HitGround() {
+		SetState( BallState.OnGround );
+		NumJuggles = 0;
+	}
+
 	PlayerBallInteraction GetClown (ClownId clownId) {
 		return PlayerRegistry.Instance.GetClown(clownId).GetComponent<PlayerBallInteraction>();
 	}
 
+	public void OnSnakeCollision(SnakeSegment segment) { 
+		if (CurrentState != BallState.Thrown && CurrentState != BallState.Bouncing) {
+			return;
+		}
+
+		if (ChargeLevel == 1) {
+			segment.TakeDamage();
+		}
+		else if (ChargeLevel == 2) {
+			segment.Die();
+		}
+
+		var bounceDir = Vector2.Reflect( this.Direction, segment.Direction.OrthogonalCCW() ).normalized;
+		SetState( BallState.Bouncing );
+		BallBouncingBehaviour.Init( bounceDir );
+
+		LastSnakeHit = segment.Snake;
+	}
 }
