@@ -3,13 +3,33 @@ using System.Collections;
 
 public class BallOnGroundBehaviour : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+	Rigidbody2D Rigidbody;
+
+	void Awake() {
+		Rigidbody = GetComponent<Rigidbody2D>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void OnEnable() {
+		Rigidbody.velocity = Vector2.zero;
+		Rigidbody.isKinematic = false;
+	}
+
+	void Update() {
+		if (CheckForPickup( ClownId.Little )) {
+			return;
+		}
+		if (CheckForPickup( ClownId.Big )) {
+			return;
+		}
+	}
+
+	bool CheckForPickup (ClownId clownId) {
+		var clown = PlayerRegistry.Instance.GetClown( clownId ).GetComponent<PlayerBallInteraction>();
+		var distance = Vector2.Distance( clown.transform.position, transform.position );
+		if (distance <= BalanceValues.Instance.PickupDistance) {
+			clown.CatchBall();
+			return true;
+		}
+		return false;
 	}
 }
