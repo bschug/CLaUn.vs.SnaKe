@@ -107,6 +107,8 @@ public class SnakeSegment : MonoBehaviour
 		}
 		Health = 0;
 
+		GetComponent<CircleCollider2D>().enabled = false;
+
 		Object.Instantiate( DeathEffectPrefab, transform.position, Quaternion.identity );
 		for (var i = 0; i < Random.Range( 2, 5 ); i++) {
 			var rubble = (GameObject) Object.Instantiate( GetRandomRubble(), (Vector2)transform.position + Random.insideUnitCircle * Radius, Random.rotation );
