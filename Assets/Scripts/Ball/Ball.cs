@@ -6,7 +6,18 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 
 	public GameObject[] Views;
 	public BallState CurrentState { get; private set; }
-	public int ChargeLevel { get; private set; }
+	public int ChargeLevel {
+		get {
+			if (NumJuggles >= 3) {
+				return 2;
+			}
+			else if (NumJuggles >= 1) {
+				return 1;
+			}
+			return 0;
+		}
+	}
+	public int NumJuggles { get; private set; }
 
 	[SerializeField]
 	BallHeldBehaviour BallHeldBehaviour;
@@ -60,13 +71,25 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
-		ChargeLevel = 0;
+		NumJuggles = 0;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
 	} 
 
 	public void Juggle (ClownId throwingClown) {
-		Debug.Log( "Ball juggled by " + throwingClown.ToString() );
+		if (CurrentState == BallState.Held) {
+			Debug.LogError( "Cannot juggle ball when held" );
+			return;
+		}
+		if (CurrentState == BallState.OnGround) {
+			Debug.LogError( "Cannot juggle ball when on ground" );
+			return;
+		}
+		Debug.Log( "Juggling to " + throwingClown.Other() );
+
+		NumJuggles++;
+		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
+		SetState( BallState.Thrown );
 	}
 
 	PlayerBallInteraction GetClown (ClownId clownId) {
