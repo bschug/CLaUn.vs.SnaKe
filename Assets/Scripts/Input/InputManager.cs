@@ -63,7 +63,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder;
 			}
 			else {
-				return Input.GetKey( KeyCode.LeftControl ) ? ButtonState.Pressed : ButtonState.Released;
+				return Input.GetKey( KeyCode.RightControl ) ? ButtonState.Pressed : ButtonState.Released;
 			}
 		}
 	}
