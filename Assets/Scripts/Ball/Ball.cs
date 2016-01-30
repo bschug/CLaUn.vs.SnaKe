@@ -45,6 +45,23 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		GetClown( ClownId.Little ).CatchBall();
 	}
 
+	void Update() {
+		
+		SwitchBallState();
+    }
+
+	void SwitchBallState () {
+
+		if (!Views[ChargeLevel].activeSelf) {
+			Views[0].SetActive( false );
+
+			Views[1].SetActive( false );
+
+			Views[2].SetActive( false );
+			Views[ChargeLevel].SetActive( true );
+		}
+	}
+
 	void SetState (BallState state) {
 		if (CurrentState == state) {
 			return;
