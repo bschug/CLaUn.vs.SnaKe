@@ -6,6 +6,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 
 	public GameObject[] Views;
 	public BallState CurrentState { get; private set; }
+	public int ChargeLevel { get; private set; }
 
 	[SerializeField]
 	BallHeldBehaviour BallHeldBehaviour;
@@ -15,6 +16,8 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	BallBouncingBehaviour BallBouncingBehaviour;
 	[SerializeField]
 	BallOnGroundBehaviour BallOnGroundBehaviour;
+
+	public float Speed { get { return BalanceValues.Instance.BallSpeed[ChargeLevel]; } }
 
 	MonoBehaviour BehaviourForState (BallState state) {
 		switch (state) {
@@ -28,9 +31,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 
 	override protected void Awake() {
 		base.Awake();
-		BallHeldBehaviour.CurrentClown = PlayerRegistry.Instance.GetClown( ClownId.Little );
 		GetClown( ClownId.Little ).CatchBall();
-		SetState( BallState.Held );
 	}
 
 	void SetState (BallState state) {
@@ -44,12 +45,24 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		CurrentState = state;
 	}
 
+	public void Catch (ClownId catchingClown) {
+		BallHeldBehaviour.CurrentClown = GetClown( catchingClown );
+		SetState( BallState.Held );
+	}
+
 	public void Throw (ClownId throwingClown) {
-		Debug.Log( "Ball thrown by " + throwingClown.ToString() );
-		//var thrown = BehaviourForState( BallState.Thrown );
-		//if (CurrentState == BallState.Held) {
-			
-		//}
+		if (CurrentState != BallState.Held) {
+			Debug.LogError( "Cannot throw ball when not held" );
+			return;
+		}
+		if (BallHeldBehaviour.CurrentClown.ClownId != throwingClown) {
+			Debug.LogError( "This clown doesn't hold the ball!" );
+			return;
+		}
+
+		ChargeLevel = 0;
+		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
+		SetState( BallState.Thrown );
 	} 
 
 	public void Juggle (ClownId throwingClown) {
@@ -57,6 +70,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	}
 
 	PlayerBallInteraction GetClown (ClownId clownId) {
-		return PlayerRegistry.Instance.GetComponent<PlayerBallInteraction>();
+		return PlayerRegistry.Instance.GetClown(clownId).GetComponent<PlayerBallInteraction>();
 	}
+
 }

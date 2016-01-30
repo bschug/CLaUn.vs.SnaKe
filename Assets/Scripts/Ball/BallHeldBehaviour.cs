@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BallHeldBehaviour : MonoBehaviour {
 
-	public GameObject CurrentClown;
+	public PlayerBallInteraction CurrentClown;
 	Rigidbody2D Rigidbody;
 
 	void Awake() {

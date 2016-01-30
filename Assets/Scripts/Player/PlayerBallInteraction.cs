@@ -14,6 +14,7 @@ public class PlayerBallInteraction : MonoBehaviour
 
 	public void CatchBall() {
 		IsHoldingBall = true;
+		Ball.Instance.Catch( ClownId );
 	}
 
 	void Update() {
