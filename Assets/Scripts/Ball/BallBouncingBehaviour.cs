@@ -16,6 +16,7 @@ public class BallBouncingBehaviour : MonoBehaviour {
 		Direction = direction;
 		HitGroundTime = Time.time + BalanceValues.Instance.BallBounceDuration;
 		Rigidbody.velocity = Direction * Ball.Instance.Speed;
+		Rigidbody.isKinematic = false;
 	}
 
 	public void FixedUpdate() {
@@ -43,7 +44,16 @@ public class BallBouncingBehaviour : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
-		Direction = Vector2.Reflect( Direction, collision.contacts[0].normal );
-		Rigidbody.velocity = Direction * Ball.Instance.Speed;
+		var contact = collision.contacts[0];
+		Debug.Log( "Ball collided with " + contact.collider.name );
+
+		var snakeSegment = contact.collider.GetComponent<SnakeSegment>();
+		if (snakeSegment != null) {
+			Ball.Instance.OnSnakeCollision( snakeSegment );
+		}
+		else {
+			Direction = Vector2.Reflect( Direction, collision.contacts[0].normal );
+			Rigidbody.velocity = Direction * Ball.Instance.Speed;
+		}
 	}
 }

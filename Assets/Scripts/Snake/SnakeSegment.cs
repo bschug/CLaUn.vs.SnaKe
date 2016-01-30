@@ -42,8 +42,6 @@ public class SnakeSegment : MonoBehaviour
 		else {
 			FollowLeader();
 		}
-
-		CheckBallCollision();
 	}
 
 	void MoveToNextWaypoint() {
@@ -89,15 +87,4 @@ public class SnakeSegment : MonoBehaviour
 		Snake.NotifySegmentUnderground( this );
 	}
 
-	void CheckBallCollision() {
-		var ball = Ball.Instance;
-		if (ball.LastSnakeHit == Snake) {
-			return;
-		}
-
-		var distanceToBall = Vector2.Distance( ball.transform.position, transform.position );
-		if (distanceToBall < Radius + ball.Radius) {
-			ball.OnSnakeCollision( this );
-		}
-	}
 }

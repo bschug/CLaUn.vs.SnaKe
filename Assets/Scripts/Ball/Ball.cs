@@ -89,6 +89,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	public void Catch (ClownId catchingClown) {
 		BallHeldBehaviour.CurrentClown = GetClown( catchingClown );
 		SetState( BallState.Held );
+		NumJuggles = 0;
 	}
 
 	public void Throw (ClownId throwingClown) {
@@ -102,6 +103,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		}
 
 		NumJuggles = 0;
+		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
 	} 
@@ -122,8 +124,14 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		SetState( BallState.Thrown );
 	}
 
+	public void OnObstacleHit(Vector2 bounceDirection) {
+		SetState( BallState.Bouncing );
+		BallBouncingBehaviour.Init( bounceDirection );
+	}
+
 	public void HitGround() {
 		SetState( BallState.OnGround );
+		NumJuggles = 0;
 	}
 
 	PlayerBallInteraction GetClown (ClownId clownId) {
@@ -138,7 +146,9 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		// TODO hit segment
 
 		var bounceDir = Vector2.Reflect( this.Direction, segment.Direction.OrthogonalCCW() ).normalized;
-		BallBouncingBehaviour.Init( bounceDir );
 		SetState( BallState.Bouncing );
+		BallBouncingBehaviour.Init( bounceDir );
+
+		LastSnakeHit = segment.Snake;
 	}
 }
