@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Ball : MonoBehaviour {
+public class Ball : SingletonMonoBehaviour<Ball> {
 
 	public GameObject[] Views;
 	public BallState CurrentState { get; private set; }
@@ -26,8 +26,10 @@ public class Ball : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
+	override protected void Awake() {
+		base.Awake();
 		BallHeldBehaviour.CurrentClown = PlayerRegistry.Instance.GetClown( ClownId.Little );
+		GetClown( ClownId.Little ).CatchBall();
 		SetState( BallState.Held );
 	}
 
@@ -42,10 +44,19 @@ public class Ball : MonoBehaviour {
 		CurrentState = state;
 	}
 
-	//public void Throw (ClownId throwingClown) {
-	//	var thrown = BehaviourForState( BallState.Thrown );
-	//	if (CurrentState == BallState.Held) {
+	public void Throw (ClownId throwingClown) {
+		Debug.Log( "Ball thrown by " + throwingClown.ToString() );
+		//var thrown = BehaviourForState( BallState.Thrown );
+		//if (CurrentState == BallState.Held) {
 			
-	//	}
-	//} 
+		//}
+	} 
+
+	public void Juggle (ClownId throwingClown) {
+		Debug.Log( "Ball juggled by " + throwingClown.ToString() );
+	}
+
+	PlayerBallInteraction GetClown (ClownId clownId) {
+		return PlayerRegistry.Instance.GetComponent<PlayerBallInteraction>();
+	}
 }
