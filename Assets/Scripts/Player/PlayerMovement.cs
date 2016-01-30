@@ -13,6 +13,6 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	void UpdatePosition (Vector2 movement) {
-		transform.Translate( movement * Speed * Time.deltaTime );
+		GetComponent<Rigidbody2D>().velocity = movement * Speed * Time.deltaTime;
 	}
 }
