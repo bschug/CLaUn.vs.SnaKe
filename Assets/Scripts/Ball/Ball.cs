@@ -89,6 +89,10 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	public void Catch (ClownId catchingClown) {
 		BallHeldBehaviour.CurrentClown = GetClown( catchingClown );
 		SetState( BallState.Held );
+		Invoke( "LoseCharge", BalanceValues.Instance.LoseChargeInHandDelay );
+	}
+
+	void LoseCharge() {
 		NumJuggles = 0;
 	}
 
@@ -102,7 +106,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
-		NumJuggles = 0;
+		CancelInvoke( "LoseCharge" );
 		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
