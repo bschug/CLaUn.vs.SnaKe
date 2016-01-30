@@ -10,6 +10,8 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
 	public float BigY { get { return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y; } }
 	public ButtonState BigThrow { get { return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder; } }
 
+	private ButtonState LittleThrowLastFrame;
+	private ButtonState BigThrowLastFrame;
 	private bool LittleThrowPressedThisFrame;
 	private bool BigThrowPressedThisFrame;
 
@@ -36,19 +38,20 @@ public class InputManager : SingletonMonoBehaviour<InputManager> {
 	}
 
 	void Update() {
-		if (!LittleThrowPressedThisFrame && LittleThrow == ButtonState.Pressed) {
+		if (LittleThrowLastFrame == ButtonState.Released && LittleThrow == ButtonState.Pressed) {
 			LittleThrowPressedThisFrame = true;
 		}
 		else {
 			LittleThrowPressedThisFrame = false;
 		}
+		LittleThrowLastFrame = LittleThrow;
 
-		if (!BigThrowPressedThisFrame && BigThrow == ButtonState.Pressed) {
+		if (BigThrowLastFrame == ButtonState.Released && BigThrow == ButtonState.Pressed) {
 			BigThrowPressedThisFrame = true;
 		}
 		else {
 			BigThrowPressedThisFrame = false;
 		}
-
+		BigThrowLastFrame = BigThrow;
 	}
 }
