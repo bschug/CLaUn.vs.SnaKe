@@ -107,6 +107,8 @@ public class SnakeSegment : MonoBehaviour
 		}
 		Health = 0;
 
+		GetComponent<CircleCollider2D>().enabled = false;
+
 		Object.Instantiate( DeathEffectPrefab, transform.position, Quaternion.identity );
 		for (var i = 0; i < Random.Range( 2, 5 ); i++) {
 			var rubble = (GameObject) Object.Instantiate( GetRandomRubble(), (Vector2)transform.position + Random.insideUnitCircle * Radius, Random.rotation );
@@ -117,12 +119,12 @@ public class SnakeSegment : MonoBehaviour
 		if (tail.Count > 0) {
 			tail[0].Leader = null;
 			var newSnake = SnakeFactory.Instance.CreateFromSegments(tail);
-			tail[0].Dig();
+			newSnake.StartCoroutine( tail[0].Dig() );
 		}
 
 		if (Snake.Segments.Count == 0) {
 			// TODO notify snake manager, check winning condition
-			GameObject.Destroy( Snake.gameObject );
+			//GameObject.Destroy( Snake.gameObject );
 		}
 
 		GameObject.Destroy( gameObject );
