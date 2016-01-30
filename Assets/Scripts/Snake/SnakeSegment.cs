@@ -12,6 +12,7 @@ public class SnakeSegment : MonoBehaviour
 	public Snake Snake { get { return transform.parent.GetComponent<Snake>(); } }
 	public bool IsHead { get { return Leader == null; } }
 	public bool IsDigging { get; private set; }
+	public Vector2 Direction { get; private set; }
 
 	int NextWaypointId = 0;
 	Rigidbody2D Rigidbody;
@@ -41,11 +42,13 @@ public class SnakeSegment : MonoBehaviour
 		else {
 			FollowLeader();
 		}
+
+		CheckBallCollision();
 	}
 
 	void MoveToNextWaypoint() {
-		var direction = (NextWaypoint - transform.position).normalized;
-		var targetPos = transform.position + direction * Speed * Time.deltaTime;
+		Direction = (NextWaypoint - transform.position).normalized;
+		var targetPos = (Vector2)transform.position + Direction * Speed * Time.deltaTime;
 		Rigidbody.MovePosition( targetPos );
 		if (DistanceToWaypoint <= Radius) {
 			SelectNextWaypoint();
@@ -53,17 +56,17 @@ public class SnakeSegment : MonoBehaviour
 	}
 
 	void FollowLeader() {
-		var direction = (Leader.transform.position - transform.position).normalized;
+		Direction = (Leader.transform.position - transform.position).normalized;
 		if (Leader.IsDigging) {
-			var movement = direction * Mathf.Min(DistanceToLeader, Speed * Time.deltaTime);
-			var targetPos = transform.position + movement;
+			var movement = Direction * Mathf.Min(DistanceToLeader, Speed * Time.deltaTime);
+			var targetPos = (Vector2)transform.position + movement;
 			Rigidbody.MovePosition( targetPos );
 			if (DistanceToLeader <= EPSILON) {
 				Snake.StartCoroutine( Dig() );
 			}
 		}
 		else if (!OverlapsLeader) {
-			var targetPos = Leader.transform.position - direction * (Leader.Radius + Radius);
+			var targetPos = (Vector2)(Leader.transform.position) - Direction * (Leader.Radius + Radius);
 			Rigidbody.MovePosition( targetPos );
 		}
 	}
@@ -84,5 +87,17 @@ public class SnakeSegment : MonoBehaviour
 		Path.HideDigAtEnd();
 		gameObject.SetActive( false );
 		Snake.NotifySegmentUnderground( this );
+	}
+
+	void CheckBallCollision() {
+		var ball = Ball.Instance;
+		if (ball.LastSnakeHit == Snake) {
+			return;
+		}
+
+		var distanceToBall = Vector2.Distance( ball.transform.position, transform.position );
+		if (distanceToBall < Radius + ball.Radius) {
+			ball.OnSnakeCollision( this );
+		}
 	}
 }

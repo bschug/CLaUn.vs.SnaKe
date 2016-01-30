@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Vector2Extensions;
 
 public class Ball : SingletonMonoBehaviour<Ball> {
 
@@ -28,7 +29,12 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 	[SerializeField]
 	BallOnGroundBehaviour BallOnGroundBehaviour;
 
+	public float Radius { get { return GetComponent<CircleCollider2D>().radius; } }
 	public float Speed { get { return BalanceValues.Instance.BallSpeed[ChargeLevel]; } }
+	public Snake LastSnakeHit { get; private set; }
+
+	Vector2 LastPosition;
+	Vector2 Direction;
 
 	MonoBehaviour BehaviourForState (BallState state) {
 		switch (state) {
@@ -45,9 +51,16 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		GetClown( ClownId.Little ).CatchBall();
 	}
 
-	void Update() {
-		
+	void Update () {
 		SwitchBallState();
+		UpdateDirection();
+	}
+
+	void UpdateDirection () { 
+		if ((Vector2)transform.position != LastPosition) {
+			Direction = (Vector2)transform.position - LastPosition;
+		}
+		LastPosition = transform.position;
     }
 
 	void SwitchBallState () {
@@ -109,8 +122,23 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		SetState( BallState.Thrown );
 	}
 
+	public void HitGround() {
+		SetState( BallState.OnGround );
+	}
+
 	PlayerBallInteraction GetClown (ClownId clownId) {
 		return PlayerRegistry.Instance.GetClown(clownId).GetComponent<PlayerBallInteraction>();
 	}
 
+	public void OnSnakeCollision(SnakeSegment segment) { 
+		if (CurrentState != BallState.Thrown && CurrentState != BallState.Bouncing) {
+			return;
+		}
+
+		// TODO hit segment
+
+		var bounceDir = Vector2.Reflect( this.Direction, segment.Direction.OrthogonalCCW() ).normalized;
+		BallBouncingBehaviour.Init( bounceDir );
+		SetState( BallState.Bouncing );
+	}
 }

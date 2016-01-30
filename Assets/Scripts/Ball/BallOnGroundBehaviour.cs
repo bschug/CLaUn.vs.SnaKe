@@ -3,13 +3,13 @@ using System.Collections;
 
 public class BallOnGroundBehaviour : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+	Rigidbody2D Rigidbody;
+
+	void Awake() {
+		Rigidbody = GetComponent<Rigidbody2D>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void OnEnable() {
+		Rigidbody.velocity = Vector2.zero;
 	}
 }

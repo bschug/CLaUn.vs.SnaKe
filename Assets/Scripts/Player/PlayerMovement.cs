@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
 	float Speed { get { return BalanceValues.Instance.PlayerSpeed; } }
 
-	void Update() {
+	void FixedUpdate() {
 		var movement = InputManager.Instance.GetMovement( ClownId );
 		UpdatePosition( movement );
 	}
