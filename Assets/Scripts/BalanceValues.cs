@@ -21,4 +21,9 @@ public class BalanceValues : SingletonMonoBehaviour<BalanceValues> {
 	public int HealthPerSegment = 3;
 
 	public float WinScreenDuration = 5;
+
+	public float SuddenDeathStonesMinDelay = 0.25f;
+	public float SuddenDeathStonesMaxDelay = 1.5f;
+	public float SuddenDeathStoneMinSpeed = 10;
+	public float SuddenDeathStoneMaxSpeed = 20;
 }
