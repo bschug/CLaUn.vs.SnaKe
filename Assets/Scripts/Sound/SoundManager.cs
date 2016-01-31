@@ -7,6 +7,14 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 	public AudioClip[] SwooshSounds;
 	public AudioClip[] BooSounds;
 	public AudioClip[] CheerSounds;
+	public AudioClip[] BigCheerSounds;
+
+	public AudioClip[] PlayerHitSounds;
+
+	public AudioClip[] SnakeSpawnSounds;
+	public AudioClip[] SnakeHitNoDmgSounds;
+	public AudioClip[] SnakeDamagedSounds;
+	public AudioClip[] SnakeSegmentDestroySounds;
 
 	protected override void Awake () {
 		base.Awake();
@@ -14,18 +22,20 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 	}
 
 	void PlaySoundFromArray(AudioClip[] sounds) {
+		if (sounds.Length == 0) {
+			Debug.LogWarning( "No sounds defined!" );
+			return;
+		}
 		AudioSource.PlayOneShot( sounds[Random.Range( 0, sounds.Length )] );
 	}
 
-	public void Swoosh() {
-		PlaySoundFromArray( SwooshSounds );
-	}
-
-	public void Boo() {
-		PlaySoundFromArray( BooSounds );
-	}
-
-	public void Cheer() {
-		PlaySoundFromArray( CheerSounds );
-	}
+	public void Swoosh() { PlaySoundFromArray( SwooshSounds ); }
+	public void Boo() { PlaySoundFromArray( BooSounds ); }
+	public void Cheer() { PlaySoundFromArray( CheerSounds ); }
+	public void BigCheer() { PlaySoundFromArray( BigCheerSounds ); }
+	public void PlayerHit() { PlaySoundFromArray( PlayerHitSounds ); }
+	public void SnakeSpawned() { PlaySoundFromArray( SnakeSpawnSounds ); }
+	public void SnakeHitNoDmg() { PlaySoundFromArray( SnakeHitNoDmgSounds ); }
+	public void SnakeDamaged() { PlaySoundFromArray( SnakeDamagedSounds ); }
+	public void SnakeSegmentDestroyed() { PlaySoundFromArray( SnakeSegmentDestroySounds ); }
 }

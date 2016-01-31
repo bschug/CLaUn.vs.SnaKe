@@ -14,10 +14,12 @@ public class LoseCondition : SingletonMonoBehaviour<LoseCondition> {
 		NumPlayersDead++;
 
 		if (NumPlayersDead == 2) {
+			SoundManager.Instance.Cheer();
 			LoseScreen.SetActive( true );
 			Invoke( "RestartScene", RestartDelay );
 		}
 		else if (NumPlayersDead == 1) {
+			SoundManager.Instance.Boo();
 			SuddenDeath.enabled = true;
 		}
 	}

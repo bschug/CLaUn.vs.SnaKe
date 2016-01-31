@@ -18,6 +18,7 @@ public class WinningConditionManager : SingletonMonoBehaviour<WinningConditionMa
 		if (ActiveSnakes.Count == 0) {
 			WinScreen.SetActive( true );
 			Invoke( "LoadNextLevel", BalanceValues.Instance.WinScreenDuration );
+			SoundManager.Instance.BigCheer();
 		}
 	}
 

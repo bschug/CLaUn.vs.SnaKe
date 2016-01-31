@@ -42,6 +42,7 @@ public class PlayerHealth : MonoBehaviour {
 
 		PlayBloodEffect();
 		PlaceBloodDecal();
+		SoundManager.Instance.PlayerHit();
 
 		if (!IsAlive) {
 			LoseCondition.Instance.PlayerDead();

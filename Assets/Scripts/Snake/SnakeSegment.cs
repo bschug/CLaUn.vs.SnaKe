@@ -110,25 +110,24 @@ public class SnakeSegment : MonoBehaviour
 	}
 
 	public void TakeDamage () {
-
-		
 		if (IsDigging) {
 			return;
 		}
-		Health--;
 		Shake.Instance.StartShake( BalanceValues.Instance.ScreenShakeIntensitySmall, BalanceValues.Instance.ScreenShakeTimeSmall );
+		SoundManager.Instance.SnakeDamaged();
+		Health--;
 		if (Health <= 0) {
 			Die();
 		}
 	}
 
-	
-
 	public void Die() {
 		if (IsDigging) {
 			return;
 		}
+
 		Health = 0;
+		SoundManager.Instance.SnakeSegmentDestroyed();
 		Shake.Instance.StartShake( BalanceValues.Instance.ScreenShakeIntensityBig, BalanceValues.Instance.ScreenShakeTimeBig );
 		GetComponent<CircleCollider2D>().enabled = false;
 

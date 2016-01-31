@@ -155,6 +155,9 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		else if (ChargeLevel == 2) {
 			segment.Die();
 		}
+		else {
+			SoundManager.Instance.SnakeHitNoDmg();
+		}
 
 		var bounceDir = Vector2.Reflect( this.Direction, segment.Direction.OrthogonalCCW() ).normalized;
 		SetState( BallState.Bouncing );

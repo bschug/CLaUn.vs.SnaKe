@@ -17,6 +17,7 @@ public class Snake : MonoBehaviour
 
 		CurrentPath.ShowDigAtStart();
 		yield return new WaitForSeconds( BalanceValues.Instance.SnakeSpawnDigDelay );
+		SoundManager.Instance.SnakeSpawned();
 
 		var SpawnQueue = new Queue<SnakeSegment>( Segments );
 		while (SpawnQueue.Count > 0) {
