@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
 	public ClownId ClownId;
 	public AnimationStates animStates;
 
+	public GameObject cloudParticle;
+
 	PlayerHealth PlayerHealth;
 
 	float Speed { get { return BalanceValues.Instance.PlayerSpeed; } }
@@ -76,9 +78,12 @@ public class PlayerMovement : MonoBehaviour
 
 		if(animStates == AnimationStates.Idle) {
 			walkAnimations[0].SetActive( true );
+			cloudParticle.SetActive( false );
+
 		}
 		else {
 			walkAnimations[0].SetActive( false );
+			cloudParticle.SetActive( true );
 		}
 		if (animStates == AnimationStates.Walk_Left) {
 			walkAnimations[1].SetActive( true );
