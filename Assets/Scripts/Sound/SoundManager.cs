@@ -10,6 +10,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 	public AudioClip[] BigCheerSounds;
 
 	public AudioClip[] PlayerHitSounds;
+	public AudioClip[] PlayerHitSlapSounds;
 
 	public AudioClip[] SnakeSpawnSounds;
 	public AudioClip[] SnakeHitNoDmgSounds;
@@ -21,7 +22,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 		AudioSource = GetComponent<AudioSource>();
 	}
 
-	void PlaySoundFromArray(AudioClip[] sounds) {
+	void PlaySoundFromArray(AudioClip[] sounds, float volumeScale = 1f) {
 		if (sounds.Length == 0) {
 			Debug.LogWarning( "No sounds defined!" );
 			return;
@@ -33,7 +34,10 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 	public void Boo() { PlaySoundFromArray( BooSounds ); }
 	public void Cheer() { PlaySoundFromArray( CheerSounds ); }
 	public void BigCheer() { PlaySoundFromArray( BigCheerSounds ); }
-	public void PlayerHit() { PlaySoundFromArray( PlayerHitSounds ); }
+	public void PlayerHit() {
+		PlaySoundFromArray( PlayerHitSounds, 2 );
+		PlaySoundFromArray( PlayerHitSlapSounds, 2 );
+	}
 	public void SnakeSpawned() { PlaySoundFromArray( SnakeSpawnSounds ); }
 	public void SnakeHitNoDmg() { PlaySoundFromArray( SnakeHitNoDmgSounds ); }
 	public void SnakeDamaged() { PlaySoundFromArray( SnakeDamagedSounds ); }
