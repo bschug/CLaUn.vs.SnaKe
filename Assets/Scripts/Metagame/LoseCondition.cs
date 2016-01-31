@@ -6,6 +6,7 @@ public class LoseCondition : SingletonMonoBehaviour<LoseCondition> {
 
 	public GameObject LoseScreen;
 	public float RestartDelay;
+	public SuddenDeath SuddenDeath;
 
 	int NumPlayersDead = 0;
 
@@ -15,6 +16,9 @@ public class LoseCondition : SingletonMonoBehaviour<LoseCondition> {
 		if (NumPlayersDead == 2) {
 			LoseScreen.SetActive( true );
 			Invoke( "RestartScene", RestartDelay );
+		}
+		else if (NumPlayersDead == 1) {
+			SuddenDeath.enabled = true;
 		}
 	}
 
