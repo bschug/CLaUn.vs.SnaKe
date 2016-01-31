@@ -17,6 +17,7 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 	}
 
 	void Start() {
+		Cursor.visible = false;
 		StartCoroutine( Co_Intro() );
 		HasThrown[ClownId.Little] = false;
 		HasThrown[ClownId.Big] = false;
