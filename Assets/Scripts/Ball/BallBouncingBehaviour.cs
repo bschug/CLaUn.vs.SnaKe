@@ -20,6 +20,7 @@ public class BallBouncingBehaviour : MonoBehaviour {
 		Rigidbody.velocity = Direction * Ball.Instance.Speed;
 		Rigidbody.isKinematic = false;
 		Rigidbody.AddTorque( Random.Range( -MaxTorque, MaxTorque ) );
+		SoundManager.Instance.Swoosh();
 	}
 
 	public void FixedUpdate() {

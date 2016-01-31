@@ -19,6 +19,7 @@ public class BallThrownBehaviour : MonoBehaviour
 	void OnEnable() {
 		Rigidbody.isKinematic = false;
 		Rigidbody.AddTorque( Random.Range( -MaxTorque, MaxTorque ) );
+		SoundManager.Instance.Swoosh();
 	}
 
 	void Update () {
