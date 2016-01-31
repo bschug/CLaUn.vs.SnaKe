@@ -27,6 +27,10 @@ public class PlayerHealth : MonoBehaviour {
 			Rigidbody.MovePosition( transform.position + (transform.position - segment.transform.position) );
 			Rigidbody.velocity = Vector2.zero;
 			Invoke( "RemoveStun", BalanceValues.Instance.StunDuration );
+
+			if (!IsAlive) {
+				LoseCondition.Instance.PlayerDead();
+			}
 		}
 	}
 
