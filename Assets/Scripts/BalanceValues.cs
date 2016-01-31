@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BalanceValues : SingletonMonoBehaviour<BalanceValues> {
 	public float PlayerSpeed;
+	public float StunDuration = 1;
+	public int PlayerHealth = 5;
 
 	public float JuggleDistance;
 	public float CatchDistance;
@@ -17,4 +19,6 @@ public class BalanceValues : SingletonMonoBehaviour<BalanceValues> {
 	public float SnakeRespawnDelay;
 	public float SnakeSpawnDigDelay;
 	public int HealthPerSegment = 3;
+
+	public float WinScreenDuration = 5;
 }

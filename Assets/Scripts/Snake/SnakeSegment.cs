@@ -123,10 +123,7 @@ public class SnakeSegment : MonoBehaviour
 			newSnake.StartCoroutine( tail[0].Dig() );
 		}
 
-		if (Snake.Segments.Count == 0) {
-			// TODO notify snake manager, check winning condition
-			//GameObject.Destroy( Snake.gameObject );
-		}
+		Snake.CheckForDeath();
 
 		GameObject.Destroy( gameObject );
 	}
