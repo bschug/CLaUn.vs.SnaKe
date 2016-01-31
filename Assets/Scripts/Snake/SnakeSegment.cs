@@ -7,6 +7,7 @@ public class SnakeSegment : MonoBehaviour
 	public SnakePath Path;
 	public GameObject DeathEffectPrefab;
 	public GameObject[] RubblePrefabs;
+	public float RubbleForce = 10f;
 	public float Radius = 0.4f;
 	public float EPSILON = 0.01f;
 	public float DigDelay = 0.75f;
@@ -107,10 +108,12 @@ public class SnakeSegment : MonoBehaviour
 		}
 		Health = 0;
 
+		GetComponent<CircleCollider2D>().enabled = false;
+
 		Object.Instantiate( DeathEffectPrefab, transform.position, Quaternion.identity );
 		for (var i = 0; i < Random.Range( 2, 5 ); i++) {
 			var rubble = (GameObject) Object.Instantiate( GetRandomRubble(), (Vector2)transform.position + Random.insideUnitCircle * Radius, Random.rotation );
-			rubble.GetComponent<Rigidbody2D>().AddForce( Random.insideUnitCircle );
+			rubble.GetComponent<Rigidbody2D>().AddForce( Random.insideUnitCircle * RubbleForce, ForceMode2D.Impulse );
 		}
 
 		var tail = Snake.DetachSegmentsBehind( this );
