@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class SnakeSegment : MonoBehaviour
 {
 	public GameObject HeadView;
 	public GameObject[] TailViews;
+	public GameObject[] DamageOverlays;
 
 	public SnakeSegment Leader;
 	public SnakePath Path;
@@ -20,8 +22,7 @@ public class SnakeSegment : MonoBehaviour
 	public bool IsDigging { get; private set; }
 	public Vector2 Direction { get; private set; }
 
-	int Health = 5;
-
+	int Health = 3;
 
 	int NextWaypointId = 0;
 	Rigidbody2D Rigidbody;
@@ -118,6 +119,12 @@ public class SnakeSegment : MonoBehaviour
 		Health--;
 		if (Health <= 0) {
 			Die();
+		}
+		else if (Health <= DamageOverlays.Length) {
+			foreach (var overlay in DamageOverlays) {
+				overlay.SetActive( false );
+			}
+			DamageOverlays[Health-1].SetActive( true );
 		}
 	}
 

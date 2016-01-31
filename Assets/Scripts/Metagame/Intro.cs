@@ -17,7 +17,9 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 	}
 
 	void Start() {
+#if !UNITY_EDITOR
 		Cursor.visible = false;
+#endif
 		StartCoroutine( Co_Intro() );
 		HasThrown[ClownId.Little] = false;
 		HasThrown[ClownId.Big] = false;
