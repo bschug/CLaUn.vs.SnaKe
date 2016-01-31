@@ -3,10 +3,15 @@ using System.Collections;
 
 public class SoundManager : SingletonMonoBehaviour<SoundManager> {
 
-	public AudioSource AudioSource;
+	AudioSource AudioSource;
 	public AudioClip[] SwooshSounds;
 	public AudioClip[] BooSounds;
 	public AudioClip[] CheerSounds;
+
+	protected override void Awake () {
+		base.Awake();
+		AudioSource = GetComponent<AudioSource>();
+	}
 
 	void PlaySoundFromArray(AudioClip[] sounds) {
 		AudioSource.PlayOneShot( sounds[Random.Range( 0, sounds.Length )] );

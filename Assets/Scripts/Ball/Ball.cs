@@ -46,8 +46,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		}
 	}
 
-	override protected void Awake() {
-		base.Awake();
+	void Start() {
 		GetClown( ClownId.Little ).CatchBall();
 	}
 
@@ -107,6 +106,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		}
 
 		Intro.Instance.BallThrown( throwingClown );
+		SoundManager.Instance.Swoosh();
 		CancelInvoke( "LoseCharge" );
 		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
@@ -124,6 +124,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		}
 
 		Intro.Instance.BallThrown( throwingClown );
+		SoundManager.Instance.Swoosh();
 		NumJuggles++;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
