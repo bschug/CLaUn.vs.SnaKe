@@ -54,4 +54,11 @@ public class Snake : MonoBehaviour
 		Segments = Segments.Take( segmentIndex ).ToList();
 		return result;
 	}
+
+	public void CheckForDeath() {
+		if (Segments.Count == 0) {
+			WinningConditionManager.Instance.SnakeDestroyed( this );
+			SnakePathRegistry.Instance.UnlockPath( CurrentPath );
+		}
+	}
 }

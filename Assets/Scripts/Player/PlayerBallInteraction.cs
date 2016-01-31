@@ -8,16 +8,28 @@ public class PlayerBallInteraction : MonoBehaviour
 {
 	public ClownId ClownId;
 
+	PlayerHealth PlayerHealth;
+
 	bool IsHoldingBall = false;
 	float DistanceToBall { get { return Vector2.Distance( Ball.Instance.transform.position, transform.position ); } }
 	bool IsBallInJuggleRange { get { return DistanceToBall <= BalanceValues.Instance.JuggleDistance; } }
 
+	void Awake() {
+		PlayerHealth = GetComponent<PlayerHealth>();
+	}
+
 	public void CatchBall() {
-		IsHoldingBall = true;
-		Ball.Instance.Catch( ClownId );
+		if (!PlayerHealth.IsStunned) {
+			IsHoldingBall = true;
+			Ball.Instance.Catch( ClownId );
+		}
 	}
 
 	void Update() {
+		if (PlayerHealth.IsStunned) {
+			return;
+		}
+
 		if (InputManager.Instance.WasThrowPressedThisFrame(ClownId)) {
 			Throw();
 		}

@@ -29,6 +29,7 @@ public class SnakeFactory : SingletonMonoBehaviour<SnakeFactory>
 		go.AddComponent<Snake>();
 		go.transform.parent = this.transform;
 		go.layer = this.gameObject.layer;
+		WinningConditionManager.Instance.SnakeSpawned( go.GetComponent<Snake>() );
 		return go.GetComponent<Snake>();
 	}
 

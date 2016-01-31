@@ -18,11 +18,19 @@ public class PlayerMovement : MonoBehaviour
 	public ClownId ClownId;
 	public AnimationStates animStates;
 
+	PlayerHealth PlayerHealth;
+
 	float Speed { get { return BalanceValues.Instance.PlayerSpeed; } }
 
+	void Awake() {
+		PlayerHealth = GetComponent<PlayerHealth>();
+	}
+
 	void FixedUpdate() {
-		var movement = InputManager.Instance.GetMovement( ClownId );
-		UpdatePosition( movement );
+		if (!PlayerHealth.IsStunned) {
+			var movement = InputManager.Instance.GetMovement( ClownId );
+			UpdatePosition( movement );
+		}
 		PlayerDirAndSetAnimationStates();
 		SetAnimation();
     }
@@ -34,7 +42,13 @@ public class PlayerMovement : MonoBehaviour
 	void PlayerDirAndSetAnimationStates() {
 		Vector2 playerDir = InputManager.Instance.GetMovement( ClownId );
 		
-		if( Mathf.Abs(playerDir.x) <= 0.1f && Mathf.Abs(playerDir.y) <= 0.1f) {
+		if (!PlayerHealth.IsAlive) {
+			// TODO: Dead animation
+		}
+		else if (PlayerHealth.IsStunned) {
+			// TODO: Stun animation
+		}
+		else if( Mathf.Abs(playerDir.x) <= 0.1f && Mathf.Abs(playerDir.y) <= 0.1f) {
 			animStates = AnimationStates.Idle;
         }
 		else if (playerDir.x <= 0 && playerDir.y == 0) {
