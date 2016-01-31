@@ -19,6 +19,7 @@ public class SnakeSegment : MonoBehaviour
 
 	int Health = 5;
 
+
 	int NextWaypointId = 0;
 	Rigidbody2D Rigidbody;
 
@@ -30,12 +31,14 @@ public class SnakeSegment : MonoBehaviour
 
 	void Awake() {
 		Rigidbody = GetComponent<Rigidbody2D>();
+		
 	}
 
 	void OnEnable() {
 		IsDigging = false;
 		NextWaypointId = 0;
 	}
+
 
 	void FixedUpdate() {
 		if (IsDigging) {
@@ -93,21 +96,26 @@ public class SnakeSegment : MonoBehaviour
 	}
 
 	public void TakeDamage () {
+
+		
 		if (IsDigging) {
 			return;
 		}
 		Health--;
+		Shake.Instance.StartShake( BalanceValues.Instance.ScreenShakeIntensitySmall, BalanceValues.Instance.ScreenShakeTimeSmall );
 		if (Health <= 0) {
 			Die();
 		}
 	}
+
+	
 
 	public void Die() {
 		if (IsDigging) {
 			return;
 		}
 		Health = 0;
-
+		Shake.Instance.StartShake( BalanceValues.Instance.ScreenShakeIntensityBig, BalanceValues.Instance.ScreenShakeTimeBig );
 		GetComponent<CircleCollider2D>().enabled = false;
 
 		Object.Instantiate( DeathEffectPrefab, transform.position, Quaternion.identity );
