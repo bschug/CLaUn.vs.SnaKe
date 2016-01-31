@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BallBouncingBehaviour : MonoBehaviour {
 
+	public float MaxTorque;
+
 	Vector2 Direction;
 	float HitGroundTime;
 
@@ -17,6 +19,7 @@ public class BallBouncingBehaviour : MonoBehaviour {
 		HitGroundTime = Time.time + BalanceValues.Instance.BallBounceDuration;
 		Rigidbody.velocity = Direction * Ball.Instance.Speed;
 		Rigidbody.isKinematic = false;
+		Rigidbody.AddTorque( Random.Range( -MaxTorque, MaxTorque ) );
 	}
 
 	public void FixedUpdate() {
