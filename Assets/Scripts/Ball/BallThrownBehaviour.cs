@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BallThrownBehaviour : MonoBehaviour
 {
+	public float MaxTorque = 3;
+
 	public PlayerBallInteraction TargetClown;
 	Rigidbody2D Rigidbody;
 	Ball Ball;
@@ -16,6 +18,7 @@ public class BallThrownBehaviour : MonoBehaviour
 
 	void OnEnable() {
 		Rigidbody.isKinematic = false;
+		Rigidbody.AddTorque( Random.Range( -MaxTorque, MaxTorque ) );
 	}
 
 	void Update () {

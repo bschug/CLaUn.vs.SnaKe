@@ -7,7 +7,8 @@ public class PlayerHealth : MonoBehaviour {
 	public bool IsStunned { get; private set; }
 	public bool IsAlive { get { return Health > 0; } }
 
-	
+	public GameObject[] BloodEffects;
+	public GameObject[] BloodDecals;
 
 	Rigidbody2D Rigidbody;
 
@@ -39,6 +40,9 @@ public class PlayerHealth : MonoBehaviour {
 		Health--;
 		IsStunned = true;
 
+		PlayBloodEffect();
+		PlaceBloodDecal();
+
 		if (!IsAlive) {
 			LoseCondition.Instance.PlayerDead();
 		}
@@ -51,5 +55,14 @@ public class PlayerHealth : MonoBehaviour {
 		if (IsAlive) {
 			IsStunned = false;
 		}
+	}
+
+	void PlayBloodEffect() {
+		var effect = (GameObject) GameObject.Instantiate( BloodEffects[Random.Range( 0, BloodEffects.Length )], transform.position, Quaternion.identity );
+		effect.transform.parent = transform;
+	}
+
+	void PlaceBloodDecal () {
+		GameObject.Instantiate( BloodDecals[Random.Range( 0, BloodDecals.Length )], transform.position, Quaternion.Euler(0,0, Random.Range(0f,360f)) );
 	}
 }
