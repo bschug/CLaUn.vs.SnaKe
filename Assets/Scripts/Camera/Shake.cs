@@ -5,9 +5,9 @@ public class Shake : SingletonMonoBehaviour<Shake>
 {
 
 
-	public float screenShakeTimeLeft = .1f;
-	public float screenShakeIntensity;
-	public float screenShakeTime;
+	private float screenShakeTimeLeft;
+	private float screenShakeIntensity;
+	private float screenShakeTime;
 
 
 	void Update () {
