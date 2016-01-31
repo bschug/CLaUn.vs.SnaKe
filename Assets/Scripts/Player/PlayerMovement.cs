@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	void FixedUpdate() {
-		if (!PlayerHealth.IsStunned) {
+		if (!PlayerHealth.IsStunned && Intro.Instance.TutorialComplete) {
 			var movement = InputManager.Instance.GetMovement( ClownId );
 			UpdatePosition( movement );
 		}

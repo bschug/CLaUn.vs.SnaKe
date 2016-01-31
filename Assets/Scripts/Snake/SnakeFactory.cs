@@ -8,7 +8,7 @@ public class SnakeFactory : SingletonMonoBehaviour<SnakeFactory>
 	int SnakeSize { get { return BalanceValues.Instance.SnakeSize; } }
 	float InitialSnakeSpawnDelay { get { return BalanceValues.Instance.InitialSnakeSpawnDelay; } }
 
-	void Start() {
+	public void SpawnSnake() {
 		Snake snake = CreateEmptySnake();
 		SnakeSegment previousSegment = null;
 		for (var i = 0; i < SnakeSize; i++) {
@@ -17,6 +17,7 @@ public class SnakeFactory : SingletonMonoBehaviour<SnakeFactory>
 			segment.gameObject.SetActive( false );
 			segment.gameObject.layer = snake.gameObject.layer;
 			segment.transform.parent = snake.transform;
+			segment.RefreshView();
 			snake.Segments.Add( segment );
 			previousSegment = segment;
 		}
@@ -38,6 +39,7 @@ public class SnakeFactory : SingletonMonoBehaviour<SnakeFactory>
 		snake.Segments = segments;
 		for(var i=0; i < segments.Count; i++) {
 			segments[i].transform.parent = snake.transform;
+			segments[i].RefreshView();
 		}
 		return snake;
 	}

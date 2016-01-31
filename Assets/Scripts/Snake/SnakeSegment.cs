@@ -3,6 +3,9 @@ using System.Collections;
 
 public class SnakeSegment : MonoBehaviour
 {
+	public GameObject HeadView;
+	public GameObject[] TailViews;
+
 	public SnakeSegment Leader;
 	public SnakePath Path;
 	public GameObject DeathEffectPrefab;
@@ -39,6 +42,17 @@ public class SnakeSegment : MonoBehaviour
 		NextWaypointId = 0;
 	}
 
+	public void RefreshView() {
+		foreach (var tailView in TailViews) {
+			tailView.SetActive( false );
+		}
+		if (IsHead) {
+			HeadView.SetActive( true );
+		}
+		else {
+			TailViews[Random.Range( 0, TailViews.Length )].SetActive( true );
+		}
+	}
 
 	void FixedUpdate() {
 		if (IsDigging) {

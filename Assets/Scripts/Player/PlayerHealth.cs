@@ -15,22 +15,33 @@ public class PlayerHealth : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
-		if (IsStunned || !IsAlive) {
+		if (!IsAlive) {
 			return;
 		}
 
 		var contact = collision.contacts[0];
-		var segment = contact.collider.GetComponent<SnakeSegment>();
-		if (segment != null) {
-			Health--;
-			IsStunned = true;
-			Rigidbody.MovePosition( transform.position + (transform.position - segment.transform.position) );
-			Rigidbody.velocity = Vector2.zero;
-			Invoke( "RemoveStun", BalanceValues.Instance.StunDuration );
+		if (contact.collider.GetComponent<PlayerDamageSource>() == null) {
+			return;
+		}
 
-			if (!IsAlive) {
-				LoseCondition.Instance.PlayerDead();
-			}
+		var ownPosition = (Vector2)transform.position;
+		Rigidbody.MovePosition( ownPosition + (ownPosition - contact.point) );
+		Rigidbody.velocity = Vector2.zero;
+
+		if (!IsStunned) {
+			TakeDamage();
+		}
+	}
+
+	public void TakeDamage () {
+		Health--;
+		IsStunned = true;
+
+		if (!IsAlive) {
+			LoseCondition.Instance.PlayerDead();
+		}
+		else {
+			Invoke( "RemoveStun", BalanceValues.Instance.StunDuration );
 		}
 	}
 
