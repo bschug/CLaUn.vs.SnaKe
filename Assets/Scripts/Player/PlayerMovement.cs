@@ -7,6 +7,8 @@ public enum AnimationStates
 	Walk_Right,
 	Walk_Front,
 	Walk_Back,
+	Stun,
+	Death,
 
 	Default
 }
@@ -43,10 +45,10 @@ public class PlayerMovement : MonoBehaviour
 		Vector2 playerDir = InputManager.Instance.GetMovement( ClownId );
 		
 		if (!PlayerHealth.IsAlive) {
-			// TODO: Dead animation
+			animStates = AnimationStates.Death;
 		}
 		else if (PlayerHealth.IsStunned) {
-			// TODO: Stun animation
+			animStates = AnimationStates.Stun;
 		}
 		else if( Mathf.Abs(playerDir.x) <= 0.1f && Mathf.Abs(playerDir.y) <= 0.1f) {
 			animStates = AnimationStates.Idle;
@@ -101,6 +103,18 @@ public class PlayerMovement : MonoBehaviour
 		}
 		else {
 			walkAnimations[4].SetActive( false );
+		}
+		if (animStates == AnimationStates.Stun) {
+			walkAnimations[5].SetActive( true );
+		}
+		else {
+			walkAnimations[5].SetActive( false );
+		}
+		if (animStates == AnimationStates.Death) {
+			walkAnimations[6].SetActive( true );
+		}
+		else {
+			walkAnimations[6].SetActive( false );
 		}
 
 	}
