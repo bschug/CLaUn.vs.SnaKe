@@ -20,7 +20,12 @@ public class BalanceValues : SingletonMonoBehaviour<BalanceValues> {
 	public float SnakeSpawnDigDelay;
 	public int HealthPerSegment = 3;
 
-	public float WinScreenDuration = 5;
+	public float ScreenShakeIntensitySmall;
+	public float ScreenShakeIntensityBig;
+    public float ScreenShakeTimeSmall;
+	public float ScreenShakeTimeBig;
+
+    public float WinScreenDuration = 5;
 
 	public float SuddenDeathStonesMinDelay = 0.25f;
 	public float SuddenDeathStonesMaxDelay = 1.5f;
