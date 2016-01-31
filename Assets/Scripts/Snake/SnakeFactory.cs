@@ -8,7 +8,7 @@ public class SnakeFactory : SingletonMonoBehaviour<SnakeFactory>
 	int SnakeSize { get { return BalanceValues.Instance.SnakeSize; } }
 	float InitialSnakeSpawnDelay { get { return BalanceValues.Instance.InitialSnakeSpawnDelay; } }
 
-	void Start() {
+	public void SpawnSnake() {
 		Snake snake = CreateEmptySnake();
 		SnakeSegment previousSegment = null;
 		for (var i = 0; i < SnakeSize; i++) {

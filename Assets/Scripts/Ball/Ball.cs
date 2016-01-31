@@ -106,6 +106,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
+		Intro.Instance.BallThrown( throwingClown );
 		CancelInvoke( "LoseCharge" );
 		LastSnakeHit = null;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
@@ -122,6 +123,7 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			return;
 		}
 
+		Intro.Instance.BallThrown( throwingClown );
 		NumJuggles++;
 		BallThrownBehaviour.TargetClown = GetClown( throwingClown.Other() );
 		SetState( BallState.Thrown );
