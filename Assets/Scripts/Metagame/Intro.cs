@@ -10,7 +10,8 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 	GameObject BigClown { get { return PlayerRegistry.Instance.BigClown; } }
 
 	Dictionary<ClownId, bool> HasThrown = new Dictionary<ClownId, bool>();
-	public bool TutorialComplete { get { return HasThrown[ClownId.Little] && HasThrown[ClownId.Big]; } }
+	public bool TutorialComplete { get { return IsInitialized && HasThrown[ClownId.Little] && HasThrown[ClownId.Big]; } }
+	public bool IsInitialized { get { return HasThrown.ContainsKey( ClownId.Big ) && HasThrown.ContainsKey( ClownId.Little ); } }
 
 	public void BallThrown (ClownId clownId) {
 		HasThrown[clownId] = true;
