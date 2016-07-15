@@ -4,18 +4,21 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+[RequireComponent(typeof(Player))]
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerBallInteraction : MonoBehaviour
 {
-	public ClownId ClownId;
-	
+	Player Player;
 	PlayerMovement PlayerMovement;
+	
+	ClownId ClownId { get { return Player.ClownId; } }
 
 	bool IsHoldingBall = false;
 	float DistanceToBall { get { return Vector2.Distance( Ball.Instance.transform.position, transform.position ); } }
 	bool IsBallInJuggleRange { get { return DistanceToBall <= BalanceValues.Instance.JuggleDistance; } }
 
 	void Awake() {
+		Player = GetComponent<Player>();
 		PlayerMovement = GetComponent<PlayerMovement>();
 	}
 

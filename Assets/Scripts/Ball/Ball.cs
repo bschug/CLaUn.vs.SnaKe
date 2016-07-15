@@ -100,10 +100,6 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 			Debug.LogError( "Cannot throw ball when not held" );
 			return;
 		}
-		if (BallHeldBehaviour.CurrentClown.ClownId != throwingClown) {
-			Debug.LogError( "This clown doesn't hold the ball!" );
-			return;
-		}
 
 		Intro.Instance.BallThrown( throwingClown );
 		SoundManager.Instance.Swoosh();
