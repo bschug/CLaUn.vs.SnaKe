@@ -2,11 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerRegistry : SingletonMonoBehaviour<PlayerRegistry> {
-
-	public GameObject LittleClown;
-	public GameObject BigClown;
-
+public class PlayerRegistry : SingletonMonoBehaviour<PlayerRegistry>
+{
 	Dictionary<ClownId, GameObject> Players = new Dictionary<ClownId, GameObject>();
 
 	public GameObject GetClown (ClownId clownId) {
@@ -18,9 +15,12 @@ public class PlayerRegistry : SingletonMonoBehaviour<PlayerRegistry> {
 		return GetClown( clownId );
 	}
 
-	protected override void Awake () {
-		base.Awake();
-		Players[ClownId.Little] = LittleClown;
-		Players[ClownId.Big] = BigClown;
+	public void RegisterPlayer (Player player) {
+		Players.Add( player.ClownId, player.gameObject );
 	}
+
+	public void RemovePlayer (Player player) {
+		Players.Remove( player.ClownId );
+	}
+	
 }

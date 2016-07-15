@@ -6,9 +6,6 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 
 	public GameObject SplashScreen;
 
-	GameObject LittleClown { get { return PlayerRegistry.Instance.LittleClown; } }
-	GameObject BigClown { get { return PlayerRegistry.Instance.BigClown; } }
-
 	Dictionary<ClownId, bool> HasThrown = new Dictionary<ClownId, bool>();
 	public bool TutorialComplete { get { return IsInitialized && HasThrown[ClownId.Little] && HasThrown[ClownId.Big]; } }
 	public bool IsInitialized { get { return HasThrown.ContainsKey( ClownId.Big ) && HasThrown.ContainsKey( ClownId.Little ); } }
