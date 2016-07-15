@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerHealth : MonoBehaviour {
 
 	public int Health { get; private set; }
-	public bool IsStunned { get; private set; }
 	public bool IsAlive { get { return Health > 0; } }
 
 	public GameObject[] BloodEffects;
 	public GameObject[] BloodDecals;
 
 	Rigidbody2D Rigidbody;
+	PlayerMovement PlayerMovement;
 
 	void Awake() {
 		Health = BalanceValues.Instance.PlayerHealth;
 		Rigidbody = GetComponent<Rigidbody2D>();
+		PlayerMovement = GetComponent<PlayerMovement>();
 	}
 
 	void OnCollisionEnter2D (Collision2D collision) {
@@ -31,14 +34,14 @@ public class PlayerHealth : MonoBehaviour {
 		Rigidbody.MovePosition( ownPosition + (ownPosition - contact.point) );
 		Rigidbody.velocity = Vector2.zero;
 
-		if (!IsStunned) {
+		if (!PlayerMovement.IsStunned) {
 			TakeDamage();
 		}
 	}
 
 	public void TakeDamage () {
 		Health--;
-		IsStunned = true;
+		PlayerMovement.Stun();
 
 		PlayBloodEffect();
 		PlaceBloodDecal();
@@ -46,15 +49,6 @@ public class PlayerHealth : MonoBehaviour {
 
 		if (!IsAlive) {
 			LoseCondition.Instance.PlayerDead();
-		}
-		else {
-			Invoke( "RemoveStun", BalanceValues.Instance.StunDuration );
-		}
-	}
-
-	void RemoveStun() {
-		if (IsAlive) {
-			IsStunned = false;
 		}
 	}
 

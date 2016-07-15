@@ -13,9 +13,9 @@ public enum AnimationStates
 	Default
 }
 
+[RequireComponent(typeof(PlayerHealth))]
 public class PlayerMovement : MonoBehaviour
 {
-
 	public GameObject[] walkAnimations;
 	public ClownId ClownId;
 	public AnimationStates animStates;
@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
 
 	PlayerHealth PlayerHealth;
 
+	float StunDurationRemaining;
+	public bool IsStunned { get { return StunDurationRemaining > 0; } }
+
 	float Speed { get { return BalanceValues.Instance.PlayerSpeed; } }
 
 	void Awake() {
@@ -31,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	void FixedUpdate() {
-		if (!PlayerHealth.IsStunned && Intro.Instance.TutorialComplete) {
+		StunDurationRemaining -= Time.deltaTime;
+		if (!IsStunned && Intro.Instance.TutorialComplete) {
 			var movement = InputManager.Instance.GetMovement( ClownId );
 			UpdatePosition( movement );
 		}
@@ -43,13 +47,17 @@ public class PlayerMovement : MonoBehaviour
 		GetComponent<Rigidbody2D>().velocity = movement * Speed;
 	}
 
+	public void Stun() {
+		StunDurationRemaining = BalanceValues.Instance.StunDuration;
+	}
+
 	void PlayerDirAndSetAnimationStates() {
 		Vector2 playerDir = InputManager.Instance.GetMovement( ClownId );
 		
 		if (!PlayerHealth.IsAlive) {
 			animStates = AnimationStates.Death;
 		}
-		else if (PlayerHealth.IsStunned) {
+		else if (IsStunned) {
 			animStates = AnimationStates.Stun;
 		}
 		else if( Mathf.Abs(playerDir.x) <= 0.1f && Mathf.Abs(playerDir.y) <= 0.1f) {
