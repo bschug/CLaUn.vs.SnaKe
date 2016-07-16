@@ -3,9 +3,11 @@ using System.Collections;
 using System.Linq;
 
 public class SnakePath : MonoBehaviour {
+	[HideInInspector]
 	public Transform[] Waypoints;
-	public GameObject DigAtStart;
-	public GameObject DigAtEnd;
+
+	GameObject DigAtStart;
+	GameObject DigAtEnd;
 
 	public Vector3 StartPosition { get { return Waypoints[0].position; } }
 
@@ -13,6 +15,19 @@ public class SnakePath : MonoBehaviour {
 
 	int DigAtStartCount = 0;
 	int DigAtEndCount = 0;
+
+	void Awake() {
+		UpdateWaypoints();
+	}
+
+	void UpdateWaypoints() {
+		Waypoints = new Transform[transform.childCount];
+		for (var i = 0; i < transform.childCount; i++) {
+			Waypoints[i] = transform.GetChild( i );
+		}
+		DigAtStart = Waypoints[0].GetChild( 0 ).gameObject;
+		DigAtEnd = Waypoints.Last().GetChild( 0 ).gameObject;
+	}
 
 	public void ShowDigAtStart() {
 		DigAtStartCount++;
@@ -39,6 +54,8 @@ public class SnakePath : MonoBehaviour {
 	}
 
 	void OnDrawGizmos() {
+		UpdateWaypoints();
+
 		if (GizmoColor.a == 0) {
 			GizmoColor = Color.HSVToRGB( Random.Range( 0f, 1f ), 1, 1 );
 		}
