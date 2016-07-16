@@ -9,7 +9,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 			if (GamePad.GetState( PlayerIndex.One ).IsConnected) {
 				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.X;
 			}
-			else { return Input.GetAxisRaw( "Horizontal" ); }
+			else { return Input.GetAxisRaw( "Red Horizontal" ); }
 		}
 	}
 	public float LittleY {
@@ -18,7 +18,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Left.Y;
 			}
 			else {
-				return Input.GetAxisRaw( "Vertical" );
+				return Input.GetAxisRaw( "Red Vertical" );
 				;
 			}
 		}
@@ -29,7 +29,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).Buttons.LeftShoulder;
 			}
 			else {
-				return Input.GetKey( KeyCode.Space ) ? ButtonState.Pressed : ButtonState.Released;
+				return Input.GetButton( "Red Throw" ) ? ButtonState.Pressed : ButtonState.Released;
 			}
 		}
 	}
@@ -40,7 +40,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.X;
 			}
 			else {
-				return Input.GetAxisRaw( "Horizontal2" );
+				return Input.GetAxisRaw( "Blue Horizontal" );
 				;
 			}
 		}
@@ -52,7 +52,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).ThumbSticks.Right.Y;
 			}
 			else {
-				return Input.GetAxisRaw( "Vertical2" );
+				return Input.GetAxisRaw( "Blue Vertical" );
 			}
 		}
 	}
@@ -63,7 +63,7 @@ public class InputManager : SingletonMonoBehaviour<InputManager>
 				return GamePad.GetState( PlayerIndex.One ).Buttons.RightShoulder;
 			}
 			else {
-				return Input.GetKey( KeyCode.RightControl ) ? ButtonState.Pressed : ButtonState.Released;
+				return Input.GetButton( "Blue Throw" ) ? ButtonState.Pressed : ButtonState.Released;
 			}
 		}
 	}
