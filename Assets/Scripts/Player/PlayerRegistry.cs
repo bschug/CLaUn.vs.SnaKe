@@ -11,7 +11,7 @@ public class PlayerRegistry : SingletonMonoBehaviour<PlayerRegistry>
 	}
 
 	public GameObject GetOtherClown (GameObject clown) {
-		var clownId = clown.GetComponent<PlayerMovement>().ClownId;
+		var clownId = clown.GetComponent<Player>().ClownId;
 		return GetClown( clownId );
 	}
 

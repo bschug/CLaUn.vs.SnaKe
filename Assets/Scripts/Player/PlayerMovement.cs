@@ -4,9 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(PlayerHealth))]
 public class PlayerMovement : MonoBehaviour
 {
-	public ClownId ClownId;
-
-	PlayerHealth PlayerHealth;
+	Player Player;
 	Rigidbody2D Rigidbody2D;
 
 	float StunDurationRemaining;
@@ -16,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 	public Vector2 CurrentVelocity;
 
 	void Awake() {
-		PlayerHealth = GetComponent<PlayerHealth>();
+		Player = GetComponent<Player>();
 		Rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
@@ -29,9 +27,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
 	void UpdateVelocity() {
-		var movementInput = InputManager.Instance.GetMovement( ClownId );
+		var movementInput = InputManager.Instance.GetMovement( Player.ClownId );
 		CurrentVelocity = movementInput * MaxSpeed;
-		GetComponent<Rigidbody2D>().velocity = CurrentVelocity;
+		Rigidbody2D.velocity = CurrentVelocity;
 	}
 
 	public void Stun() {
