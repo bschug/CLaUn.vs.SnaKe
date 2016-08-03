@@ -5,15 +5,15 @@ public class SuddenDeath : MonoBehaviour {
 
 	public GameObject StonePrefab;
 
-	GameObject ActivePlayer;
+	GameObject SurvivingClown;
 
 	float MinDelayBetweenStones { get { return BalanceValues.Instance.SuddenDeathStonesMinDelay; } }
 	float MaxDelayBetweenStones { get { return BalanceValues.Instance.SuddenDeathStonesMaxDelay; } }
 
 	void Start () {
-		ActivePlayer = PlayerRegistry.Instance.GetClown( ClownId.Little );
-		if (!ActivePlayer.GetComponent<PlayerHealth>().IsAlive) {
-			ActivePlayer = PlayerRegistry.Instance.GetClown( ClownId.Big );
+		SurvivingClown = PlayerRegistry.Instance.GetClown( ClownId.Little );
+		if (!SurvivingClown.GetComponent<PlayerHealth>().IsAlive) {
+			SurvivingClown = PlayerRegistry.Instance.GetClown( ClownId.Big );
 		}
 
 		StartCoroutine( Co_ThrowStones() );
@@ -23,7 +23,7 @@ public class SuddenDeath : MonoBehaviour {
 		while (true) {
 			yield return new WaitForSeconds( Random.Range( MinDelayBetweenStones, MaxDelayBetweenStones ) );
 			var stone = GameObject.Instantiate( StonePrefab ).GetComponent<SuddenDeathStone>();
-			stone.TargetPosition = ActivePlayer.transform.position;
+			stone.TargetPosition = SurvivingClown.transform.position;
 		}
 	}
 }
