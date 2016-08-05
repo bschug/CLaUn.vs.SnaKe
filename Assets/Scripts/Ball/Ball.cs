@@ -46,10 +46,6 @@ public class Ball : SingletonMonoBehaviour<Ball> {
 		}
 	}
 
-	void Start() {
-		GetClown( ClownId.Little ).CatchBall();
-	}
-
 	void Update () {
 		SwitchBallState();
 		UpdateDirection();

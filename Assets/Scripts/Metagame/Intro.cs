@@ -24,6 +24,7 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 	}
 
 	IEnumerator Co_Intro() {
+		GiveBallToClown( ClownId.Little );
 		yield return StartCoroutine( Co_DropClowns() );
 		StartCoroutine( Co_ShowIntroText() );
 	}
@@ -39,5 +40,10 @@ public class Intro : SingletonMonoBehaviour<Intro> {
 		}
 		SplashScreen.SetActive( false );
 		SnakeFactory.Instance.SpawnSnake();
+	}
+
+	void GiveBallToClown(ClownId clownId) {
+		var clown = PlayerRegistry.Instance.GetClown( clownId ).GetComponent<PlayerBallInteraction>();
+		clown.CatchBall();
 	}
 }
