@@ -332,7 +332,7 @@ GameObject:
   - 95: {fileID: 9560752}
   - 114: {fileID: 11450468}
   m_Layer: 8
-  m_Name: Big
+  m_Name: Blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
